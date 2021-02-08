@@ -8,9 +8,16 @@ Le but du TP d’aujourd’hui est d’écrire un script dans lequel :
 6. Vous devez tester que le nombre entré est correct. Par exemple, retournez une erreur si ce qu’entre l’utilisateur
    n’est pas un nombre, ou n’est pas compris entre 1 et 1000.
 """
+import random
+import math
 
 
-a = 520
+import test_import
+
+
+a = random.randint(1, 1000)
+
+print(test_import.fibonacci(test_import.ma_variable))
 
 while True:
 
