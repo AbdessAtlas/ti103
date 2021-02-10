@@ -11,7 +11,6 @@ Le but du TP d’aujourd’hui est d’écrire un script dans lequel :
 import random
 import math
 
-
 import test_import
 
 
