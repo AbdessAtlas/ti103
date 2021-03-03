@@ -23,6 +23,9 @@ while True:
             print("Bye bye.")
             sys.exit(0)
 
+        elif event.type == pygame.MOUSEMOTION:
+            pass
+        
         elif event.type == pygame.MOUSEBUTTONDOWN:
             if event.button == 1:
                 x, y = event.pos
@@ -32,6 +35,8 @@ while True:
             if event.button == 1:
                 x, y = event.pos
                 print(x, y)
+
+
 
     screen.fill((255, 255, 255))
     screen.blit(board, board.get_rect())
