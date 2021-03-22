@@ -5,9 +5,24 @@ PEP8
 """
 
 class PatriciaMerkleTrie:
+    __slots__ = ['letter', 'children']   # Reduit la consommation memoire de chaque mot
+
     def __init__(self, letter):
         self.letter = letter
         self.children = []
+
+    def __contains__(self, item):
+        for c in self.children:
+            if c.letter == item:
+                return True
+
+        return False
+
+    def __eq__(self, other):
+        if other == self.letter:
+            return True
+
+        return False
 
     def __len__(self):
         return len(self.children)
@@ -23,11 +38,24 @@ class PatriciaMerkleTrie:
             return False
 
     def add(self, letter):
+        # Condition car la lettre existe deja, donc on la retourne
         for child in self.children:
             if child.letter == letter:
-                return
+                return child
 
-        self.children.append(PatriciaMerkleTrie(letter))
+        # Condition ou la lettre n'existe pas, donc on en cree une nouvelle et on la retourne
+        obj = PatriciaMerkleTrie(letter)  # On cree une nouvelle lettre
+        self.children.append(obj)         # On l'ajoute aux enfants de la lettre en cours
+        return obj                        # On la retourne pour etre utilisee comme lettre courante plus tard
+
+    def get(self, letter):
+        # Condition car la lettre existe deja, donc on la retourne
+        for child in self.children:
+            if child.letter == letter:
+                return child
+
+        # Il n'y a pas de sous entree dans notre dictionaire. Donc bah rien a retourner.
+        return None
 
     def dump(self, racine):
         if self.is_leaf():
@@ -37,11 +65,63 @@ class PatriciaMerkleTrie:
             for child in self.children:
                 child.dump(racine + self.letter)
 
+    def hash(self):
+        if self.is_leaf():
+            return hash(self.letter)
+
+        else:
+            h = hash(self.letter)
+            for c in self.children:
+                h += c.hash()
+            return hash(h)
+
+
+# 1. Ajouter des mots entiers
+def add_new_word(root, new_word):
+    """
+    add_new_word(r, "Rubens")
+    => var = r.add("u")
+    => var = var.add("b")
+       var.add("e")
+    """
+    if new_word[0].lower() == root:
+        var = root
+        for l in new_word[1:]:
+            var = var.add(l.lower())
+
+    else:
+        return
+
+
+# 2. Verifier l'appartenance d'un mot dans la structure
+def has_word(root, word):
+    """
+    has_word(r, "Rubens")
+    var = r
+    u in children r?
+    b in children u?
+    e in children b?
+    """
+    if word[0].lower() == root:
+        var = root
+        for l in word[1:]:
+            var = var.get(l.lower())
+            if var is None:
+                return False
+    else:
+        return False
+
+    return True
+
+dictionary = ['romane', 'romanus', 'romulus', 'rubens', 'ruber', 'rubicon', 'rubicundus']
 
 r = PatriciaMerkleTrie('r')
-r.add('o')
+for word in dictionary:
+    add_new_word(r, word)
 
-print(r.letter)
-print(r.is_leaf())
-print(f"{r.letter} has {len(r)} children nodes")
 r.dump('')
+
+print(has_word(r, "rubens"))
+print(has_word(r, "patricia"))
+print(has_word(r, "x_ae_12"))
+print(hex(r.hash()))
