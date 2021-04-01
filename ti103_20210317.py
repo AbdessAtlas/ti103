@@ -113,15 +113,17 @@ def has_word(root, word):
 
     return True
 
-dictionary = ['romane', 'romanus', 'romulus', 'rubens', 'ruber', 'rubicon', 'rubicundus']
 
-r = PatriciaMerkleTrie('r')
-for word in dictionary:
-    add_new_word(r, word)
+if __name__ == "__main__":
+    dictionary = ['romane', 'romanus', 'romulus', 'rubens', 'ruber', 'rubicon', 'rubicundus']
 
-r.dump('')
+    r = PatriciaMerkleTrie('r')
+    for word in dictionary:
+        add_new_word(r, word)
 
-print(has_word(r, "rubens"))
-print(has_word(r, "patricia"))
-print(has_word(r, "x_ae_12"))
-print(hex(r.hash()))
+    r.dump('')
+
+    print(has_word(r, "rubens"))
+    print(has_word(r, "patricia"))
+    print(has_word(r, "x_ae_12"))
+    print(hex(r.hash()))
